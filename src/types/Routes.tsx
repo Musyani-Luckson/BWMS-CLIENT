@@ -13,6 +13,7 @@ import {
   // BiEditAlt,
 BiMailSend
 } from "react-icons/bi";
+import { Role } from "./User";
 
 export type Route = {
   to: string;
@@ -21,12 +22,12 @@ export type Route = {
   icon: React.ReactNode; // <-- React component, not a string
 };
 
-type Role =
-  | "admin"
-  | "manager"
-  | "warehouse_staff"
-  | "department_staff"
-  | "supplier";
+// type Role =
+//   | "admin"
+//   | "manager"
+//   | "warehouse_staff"
+//   | "department_staff"
+//   | "supplier";
 
 export type DashboardRoutes = {
   [key in Role]: Route[];

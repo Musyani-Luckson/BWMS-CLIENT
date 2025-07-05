@@ -8,11 +8,12 @@ import { BsPersonFillCheck } from "react-icons/bs";
 import { FaClipboardUser } from "react-icons/fa6";
 
 import { NavLink } from "react-router-dom";
-import { userObject } from "../../types/User";
-
-const role = userObject?.data?.role;
+import { useUserContext } from "../../hooks/UserContextHook";
 
 function Header() {
+  const { user } = useUserContext();
+  const role = user?.user?.role;
+
   return (
     <div id="header" className="layouts border-bottom">
       <div id="headerContainer">
@@ -27,7 +28,6 @@ function Header() {
         </div>
         <div className="headerRight">
           <IoNotificationsCircleSharp className="headerIcon" />
-
           {role === "admin" && <MdAdminPanelSettings className="headerIcon" />}
           {role === "manager" && <FaUserTie className="headerIcon" />}
           {role === "warehouse_staff" && (
