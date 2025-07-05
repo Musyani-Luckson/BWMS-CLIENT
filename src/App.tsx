@@ -28,9 +28,11 @@ import DeliverStockFormPage from "./pages/Supplier/DeliverStockFormPage";
 import IssueFeedbackPanelPage from "./pages/Supplier/IssueFeedbackPanelPage";
 
 import RequestStatusPage from "./pages/WarehouseStaff/RequestStatusPage";
-import { userObject } from "./types/User";
+// import { userObject } from "./types/User";
 import "./App.css";
 import NotFoundPage from "./components/other/NotFoundPage";
+import { useUserContext } from "./hooks/UserContextHook";
+import Loading from "./components/other/Loading";
 
 // Dashboard Layout Wrappers
 const AdminDashboard = () => <Outlet />;
@@ -41,7 +43,9 @@ const SupplierDashboard = () => <Outlet />;
 
 // Mock authenticated user
 function App() {
-  const role = userObject?.data?.role;
+  const { user, isLoading } = useUserContext();
+  const role = user?.user?.role;
+  
   // Role-based redirection
   const getRedirectPath = (role: string): string => {
     switch (role) {
@@ -60,97 +64,108 @@ function App() {
     }
   };
 
-  const router = createBrowserRouter(
-    createRoutesFromElements(
-      <>
-        <Route path="/" element={<Layout />}>
-          {/* Admin Dashboard Routes */}
-          <Route
-            path="admin"
-            element={
-              <ProtectedRoutes role={role} allowedRoles={["admin"]}>
-                <AdminDashboard />
-              </ProtectedRoutes>
-            }
-          >
-            <Route index element={<AdminDashboardHome />} />
-            <Route path="users" element={<ManageUsersPage />} />
-            <Route path="stocks" element={<AdminStockOverviewPage />} />
-            <Route path="activity_logs" element={<ActivityLogsPage />} />
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (role) {
+    const router = createBrowserRouter(
+      createRoutesFromElements(
+        <>
+          <Route path="/" element={<Layout />}>
+            {/* Admin Dashboard Routes */}
+            <Route
+              path="admin"
+              element={
+                <ProtectedRoutes role={role} allowedRoles={["admin"]}>
+                  <AdminDashboard />
+                </ProtectedRoutes>
+              }
+            >
+              <Route index element={<AdminDashboardHome />} />
+              <Route path="users" element={<ManageUsersPage />} />
+              <Route path="stocks" element={<AdminStockOverviewPage />} />
+              <Route path="activity_logs" element={<ActivityLogsPage />} />
+            </Route>
+
+            {/* Manager Dashboard Routes */}
+            <Route
+              path="manager"
+              element={
+                <ProtectedRoutes role={role} allowedRoles={["manager"]}>
+                  <ManagerDashboard />
+                </ProtectedRoutes>
+              }
+            >
+              <Route index element={<ManagerDashboardHome />} />
+              <Route
+                path="stock_management"
+                element={<StockManagementPage />}
+              />
+              <Route path="users" element={<ManageUsersPage />} />
+              <Route path="requests" element={<RequestManagementPage />} />
+              <Route path="stocks" element={<AdminStockOverviewPage />} />
+              <Route path="deliveries" element={<DeliveryOversightPage />} />
+              <Route path="activity_logs" element={<ActivityLogsPage />} />
+            </Route>
+
+            {/* Warehouse Staff Dashboard Routes */}
+            <Route
+              path="warehouse"
+              element={
+                <ProtectedRoutes role={role} allowedRoles={["warehouse_staff"]}>
+                  <WarehouseDashboard />
+                </ProtectedRoutes>
+              }
+            >
+              <Route index element={<WarehouseDashboardHome />} />
+              <Route path="stock_movement" element={<StockMovementPage />} />
+              <Route path="move_stock" element={<MoveStockFormPage />} />
+              <Route path="request_status" element={<RequestStatusPage />} />
+            </Route>
+
+            {/* Department Staff Dashboard Routes */}
+            <Route
+              path="department"
+              element={
+                <ProtectedRoutes
+                  role={role}
+                  allowedRoles={["department_staff"]}
+                >
+                  <DepartmentDashboard />
+                </ProtectedRoutes>
+              }
+            >
+              <Route index element={<DepartmentDashboardHome />} />
+              <Route path="request_history" element={<RequestHistoryPage />} />
+              <Route path="request_summary" element={<RequestSummaryPage />} />
+            </Route>
+
+            {/* Supplier Dashboard Routes */}
+            <Route
+              path="supplier"
+              element={
+                <ProtectedRoutes role={role} allowedRoles={["supplier"]}>
+                  <SupplierDashboard />
+                </ProtectedRoutes>
+              }
+            >
+              <Route index element={<SupplierDashboardHome />} />
+              <Route path="deliver_stock" element={<DeliverStockFormPage />} />
+              <Route path="feedback" element={<IssueFeedbackPanelPage />} />
+            </Route>
+
+            {/* Role-Based Redirect on Root */}
+            <Route index element={<Navigate to={getRedirectPath(role)} />} />
           </Route>
 
-          {/* Manager Dashboard Routes */}
-          <Route
-            path="manager"
-            element={
-              <ProtectedRoutes role={role} allowedRoles={["manager"]}>
-                <ManagerDashboard />
-              </ProtectedRoutes>
-            }
-          >
-            <Route index element={<ManagerDashboardHome />} />
-            <Route path="stock_management" element={<StockManagementPage />} />
-            <Route path="users" element={<ManageUsersPage />} />
-            <Route path="requests" element={<RequestManagementPage />} />
-            <Route path="stocks" element={<AdminStockOverviewPage />} />
-            <Route path="deliveries" element={<DeliveryOversightPage />} />
-            <Route path="activity_logs" element={<ActivityLogsPage />} />
-          </Route>
+          {/* Fallback Route for 404 */}
+          <Route path="*" element={<NotFoundPage />} />
+        </>
+      )
+    );
 
-          {/* Warehouse Staff Dashboard Routes */}
-          <Route
-            path="warehouse"
-            element={
-              <ProtectedRoutes role={role} allowedRoles={["warehouse_staff"]}>
-                <WarehouseDashboard />
-              </ProtectedRoutes>
-            }
-          >
-            <Route index element={<WarehouseDashboardHome />} />
-            <Route path="stock_movement" element={<StockMovementPage />} />
-            <Route path="move_stock" element={<MoveStockFormPage />} />
-            <Route path="request_status" element={<RequestStatusPage />} />
-          </Route>
-
-          {/* Department Staff Dashboard Routes */}
-          <Route
-            path="department"
-            element={
-              <ProtectedRoutes role={role} allowedRoles={["department_staff"]}>
-                <DepartmentDashboard />
-              </ProtectedRoutes>
-            }
-          >
-            <Route index element={<DepartmentDashboardHome />} />
-            <Route path="request_history" element={<RequestHistoryPage />} />
-            <Route path="request_summary" element={<RequestSummaryPage />} />
-          </Route>
-
-          {/* Supplier Dashboard Routes */}
-          <Route
-            path="supplier"
-            element={
-              <ProtectedRoutes role={role} allowedRoles={["supplier"]}>
-                <SupplierDashboard />
-              </ProtectedRoutes>
-            }
-          >
-            <Route index element={<SupplierDashboardHome />} />
-            <Route path="deliver_stock" element={<DeliverStockFormPage />} />
-            <Route path="feedback" element={<IssueFeedbackPanelPage />} />
-          </Route>
-
-          {/* Role-Based Redirect on Root */}
-          <Route index element={<Navigate to={getRedirectPath(role)} />} />
-        </Route>
-
-        {/* Fallback Route for 404 */}
-        <Route path="*" element={<NotFoundPage />} />
-      </>
-    )
-  );
-
-  return <RouterProvider router={router} />;
+    return <RouterProvider router={router} />;
+  }
 }
 
 export default App;
