@@ -1,14 +1,6 @@
-/* * {
-  border: rgba(0, 0, 0, 0.2) 1px solid;
-} */
-/* Mobile Devices (portrait and landscape) up to 767px */
-@media only screen and (max-width: 567px) {
-}
-
-/* Tablets and Min Laptops 768px */
-@media only screen and (min-width: 568px) {
-}
-
-/* Desktops and larger screens 1340px*/
-@media only screen and (min-width: 840px) {
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0;
+  text-align: left;
 }

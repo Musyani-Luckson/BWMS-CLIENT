@@ -1,14 +1,10 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import "./index.css";
-import App from "./App.tsx";
+import React from "react"
+import ReactDOM from "react-dom/client"
+import App from "./App"
+import "./index.css"
 
-import { UserContextProvider } from "./contexts/UserContext.tsx";
-
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <UserContextProvider>
-      <App />
-    </UserContextProvider>
-  </StrictMode>
-);
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
