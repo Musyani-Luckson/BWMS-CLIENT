@@ -1,4 +1,4 @@
-import { User, AuthUserState } from "../types/User";
+import { FetchedUser, AuthUserState } from "../types/auth";
 
 export const SIGNUP = "SIGNUP";
 export const SIGNIN = "SIGNIN";
@@ -11,13 +11,13 @@ export const LIST_DEPARTMENTS = "LIST_DEPARTMENTS";
 export const NEW_DEPARTMENT = "NEW_DEPARTMENT";
 
 type AuthActionTypes =
-  | { type: typeof SIGNUP; payload: User }
-  | { type: typeof SIGNIN; payload: User }
+  | { type: typeof SIGNUP; payload: FetchedUser }
+  | { type: typeof SIGNIN; payload: FetchedUser }
   | { type: typeof SIGNOUT }
   | { type: typeof DELETE; payload: AuthUserState }
   | { type: typeof HAS_ADMIN; payload: boolean }
-  | { type: typeof UPDATE_USER; payload: User }
-  | { type: typeof GET_ALL_USERS; payload: User[] }
+  | { type: typeof UPDATE_USER; payload: FetchedUser }
+  | { type: typeof GET_ALL_USERS; payload: FetchedUser[] }
   | { type: typeof LIST_DEPARTMENTS; payload: string[] }
   | { type: typeof NEW_DEPARTMENT; payload: string };
 

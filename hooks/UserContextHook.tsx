@@ -1,25 +1,25 @@
 import { createContext, useContext } from "react";
 import {
   ErrorResponse,
-  User,
+  FetchedUser,
   UserSignIn,
   UserSignUp,
   AuthUserState,
-} from "../types/User";
+} from "../types/auth";
 
 type UserContextType = {
   signUp: (userSignUp: UserSignUp) => Promise<void>;
   signIn: (userSignIn: UserSignIn) => Promise<void>;
   signOut: () => Promise<void>;
   deleteAccount: (userDeleteAccount: AuthUserState) => Promise<void>;
-  updateUser: (userUpdate: User) => Promise<void>;
-  getAllUsers: () => Promise<User[]>;
+  updateUser: (userUpdate: FetchedUser) => Promise<void>;
+  getAllUsers: () => Promise<FetchedUser[]>;
   listDepartments: () => Promise<string[]>;
   newDepartment: (departmentName: string) => Promise<void>;
   isLoading: boolean;
   error: ErrorResponse | null;
   user: AuthUserState | null;
-  users: User[] | null;
+  users: FetchedUser[] | null;
   departments: string[] | null;
 };
 
