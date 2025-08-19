@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import { useState } from "react";
 import { Button } from "./ui/button";
@@ -7,7 +7,7 @@ import { LogOut, User } from "lucide-react";
 // Admin Pages
 import AdminDashboardHome from "../../pages/Admin/AdminDashboardHome";
 import UserManagement from "../../pages/Admin/UserManagement";
-// import SystemSettings from "../../pages/Admin/SystemSettings";
+import SystemSettings from "../../pages/Admin/SystemSettings";
 import BlockchainLogs from "../../pages/Admin/BlockchainLogs";
 
 // Manager Pages
@@ -33,14 +33,7 @@ import RequestStatusPage from "../../pages/WarehouseStaff/RequestStatusPage";
 import StockAlertUpdatePage from "../../pages/WarehouseStaff/StockAlertUpdatePage";
 import StockReceiving from "../../pages/WarehouseStaff/StockReceiving";
 import { useUserContext } from "../../hooks/UserContextHook";
-import { Role } from "types/User";
-
-// type UserRole =
-//   | "admin"
-//   | "manager"
-//   | "staff-central"
-//   | "staff-department"
-//   | "supplier";
+import { UserRole } from "types/auth";
 
 type AdminPage = "dashboard" | "users" | "settings" | "blockchain";
 type ManagerPage = "dashboard" | "requests" | "stock" | "deliveries";
@@ -48,30 +41,34 @@ type DepartmentStaffPage = "dashboard" | "history" | "summary";
 type SupplierPage = "dashboard" | "deliveries" | "feedback";
 type WarehouseStaffPage =
   | "dashboard"
+  | "add-stock"
   | "move-stock"
   | "requests"
-  | "alerts"
-  | "add-stock";
+  | "alerts";
 
 export default function MainApp() {
-  const { user, signOut, } = useUserContext();
+  const { user, signOut } = useUserContext();
   const role = user?.user?.role;
+  const [currentRole] = useState<UserRole>(role ?? "admin");
 
-  const [currentRole] = useState<Role>(role ?? "admin"); // This should be dynamically set based on user login
   const [adminActivePage, setAdminActivePage] =
     useState<AdminPage>("dashboard");
+
   const [managerActivePage, setManagerActivePage] =
     useState<ManagerPage>("dashboard");
+
   const [departmentStaffActivePage, setDepartmentStaffActivePage] =
     useState<DepartmentStaffPage>("dashboard");
+
   const [supplierActivePage, setSupplierActivePage] =
     useState<SupplierPage>("dashboard");
+
   const [warehouseStaffActivePage, setWarehouseStaffActivePage] =
     useState<WarehouseStaffPage>("dashboard");
 
   const handleLogout = () => {
     if (confirm("Are you sure you want to logout?")) {
-      signOut(); // Call the signOut function from UserContext to handle logout
+      signOut();
     }
   };
 
@@ -84,7 +81,7 @@ export default function MainApp() {
       <div className="flex items-center space-x-3">
         <div className="flex items-center space-x-2 text-sm text-gray-600">
           <User className="h-4 w-4" />
-          <span>{user?.user?.socialSecurityNumber}</span>
+          <span>{user?.user?.employeeId}</span>
         </div>
         <Button
           variant="outline"
@@ -107,6 +104,7 @@ export default function MainApp() {
           subtitle="Administrator Dashboard"
         />
         <div className="flex">
+          {/* Sidebar */}
           <div className="w-64 bg-white shadow-sm border-r">
             <div className="p-4 border-b">
               <h2 className="font-semibold text-lg">Admin Panel</h2>
@@ -145,10 +143,12 @@ export default function MainApp() {
               </Button>
             </nav>
           </div>
+
+          {/* Main Content */}
           <div className="flex-1">
             {adminActivePage === "dashboard" && <AdminDashboardHome />}
             {adminActivePage === "users" && <UserManagement />}
-            {/* {adminActivePage === "settings" && <SystemSettings />} */}
+            {adminActivePage === "settings" && <SystemSettings />}
             {adminActivePage === "blockchain" && <BlockchainLogs />}
           </div>
         </div>
@@ -164,6 +164,7 @@ export default function MainApp() {
           subtitle="Manager Dashboard"
         />
         <div className="flex">
+          {/* Sidebar */}
           <div className="w-64 bg-white shadow-sm border-r">
             <div className="p-4 border-b">
               <h2 className="font-semibold text-lg">Manager Panel</h2>
@@ -206,6 +207,8 @@ export default function MainApp() {
               </Button>
             </nav>
           </div>
+
+          {/* Main Content */}
           <div className="flex-1">
             {managerActivePage === "dashboard" && <ManagerDashboardHome />}
             {managerActivePage === "requests" && <RequestApproval />}
@@ -217,7 +220,7 @@ export default function MainApp() {
     );
   }
 
-  if (currentRole === "department_staff") {
+  if (currentRole === "staff_department") {
     return (
       <div className="min-h-screen bg-gray-50">
         <Header
@@ -225,6 +228,7 @@ export default function MainApp() {
           subtitle="Department Staff Dashboard"
         />
         <div className="flex">
+          {/* Sidebar */}
           <div className="w-64 bg-white shadow-sm border-r">
             <div className="p-4 border-b">
               <h2 className="font-semibold text-lg">Department Staff</h2>
@@ -264,6 +268,8 @@ export default function MainApp() {
               </Button>
             </nav>
           </div>
+
+          {/* Main Content */}
           <div className="flex-1">
             {departmentStaffActivePage === "dashboard" && (
               <DepartmentDashboard />
@@ -284,6 +290,7 @@ export default function MainApp() {
           subtitle="Supplier Dashboard"
         />
         <div className="flex">
+          {/* Sidebar */}
           <div className="w-64 bg-white shadow-sm border-r">
             <div className="p-4 border-b">
               <h2 className="font-semibold text-lg">Supplier Panel</h2>
@@ -321,6 +328,8 @@ export default function MainApp() {
               </Button>
             </nav>
           </div>
+
+          {/* Main Content */}
           <div className="flex-1">
             {supplierActivePage === "dashboard" && <SupplierDashboardHome />}
             {supplierActivePage === "deliveries" && <DeliverStockFormPage />}
@@ -331,7 +340,7 @@ export default function MainApp() {
     );
   }
 
-  if (currentRole === "warehouse_staff") {
+  if (currentRole === "staff_central_store") {
     return (
       <div className="min-h-screen bg-gray-50">
         <Header
@@ -339,6 +348,7 @@ export default function MainApp() {
           subtitle="Warehouse Staff Dashboard"
         />
         <div className="flex">
+          {/* Sidebar */}
           <div className="w-64 bg-white shadow-sm border-r">
             <div className="p-4 border-b">
               <h2 className="font-semibold text-lg">Warehouse Staff</h2>
@@ -396,6 +406,8 @@ export default function MainApp() {
               </Button>
             </nav>
           </div>
+
+          {/* Main Content */}
           <div className="flex-1">
             {warehouseStaffActivePage === "dashboard" && (
               <WarehouseDashboard onNavigate={setWarehouseStaffActivePage} />
