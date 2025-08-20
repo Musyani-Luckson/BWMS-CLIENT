@@ -12,9 +12,9 @@ export interface FetchedUser {
   lastName: string;
   email: string;
   employeeId: string;
-  department: string;
-  blockchainId: string;
+  department: Department | "";
   status?: "active" | "inactive";
+  blockchainId?: string;
 }
 
 export type AuthUserState = {
@@ -48,3 +48,13 @@ export type ErrorResponse = {
     ]: ErrorBody;
   };
 };
+
+//
+
+export type Department =
+  | "registry"
+  | "finance"
+  | "human-resources"
+  | "procurement"
+  | "library"
+  | "ict";

@@ -25,7 +25,7 @@ const users: FetchedUser[] = [
     lastName: "Doe",
     email: "john.doe@company.com",
     role: "admin",
-    department: "IT",
+    department: "finance",
     blockchainId: "bc-101",
     status: "active",
   },
@@ -36,7 +36,7 @@ const users: FetchedUser[] = [
     lastName: "Smith",
     email: "alice.smith@company.com",
     role: "manager",
-    department: "Finance",
+    department: "human-resources",
     blockchainId: "bc-102",
     status: "active",
   },
@@ -47,7 +47,7 @@ const users: FetchedUser[] = [
     lastName: "Brown",
     email: "michael.brown@company.com",
     role: "supplier",
-    department: "Operations",
+    department: "ict",
     blockchainId: "bc-103",
     status: "active",
   },
@@ -58,7 +58,7 @@ const users: FetchedUser[] = [
     lastName: "Johnson",
     email: "sophia.johnson@company.com",
     role: "staff_central_store",
-    department: "HR",
+    department: "library",
     blockchainId: "bc-104",
     status: "inactive",
   },
@@ -69,7 +69,7 @@ const users: FetchedUser[] = [
     lastName: "Lee",
     email: "david.lee@company.com",
     role: "manager",
-    department: "Logistics",
+    department: "human-resources",
     blockchainId: "bc-105",
     status: "active",
   },
@@ -98,7 +98,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
             lastName: "Doe",
             email: "john.doe@example.com",
             employeeId: "12345678",
-            department: "Engineering",
+            department: "registry",
             role: "admin",
             blockchainId: "0x1234567890abcdef",
           },
@@ -171,10 +171,12 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const deleteAccount = async (userDeleteAccount: AuthUserState) => {
+    const URL = `${(import.meta as any).env.VITE_SERVER}/api/user/delete`;
     dispatch({ type: "DELETE", payload: userDeleteAccount });
   };
 
   const updateUser = async (user: FetchedUser) => {
+    const URL = `${(import.meta as any).env.VITE_SERVER}/api/user/update`;
     dispatch({ type: "UPDATE_USER", payload: user });
   };
 
@@ -223,7 +225,18 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const newDepartment = async (department: string) => {
+    const URL = `${(import.meta as any).env.VITE_SERVER}/api/department/new`;
     dispatch({ type: "NEW_DEPARTMENT", payload: department });
+  };
+
+  const addUser = async (user: FetchedUser) => {
+    const URL = `${(import.meta as any).env.VITE_SERVER}/api/user/new`;
+    dispatch({ type: "ADD_USER", payload: user });
+  };
+
+  const deleteUser = async (userId: string) => {
+    const URL = `${(import.meta as any).env.VITE_SERVER}/api/user/delete`;
+    dispatch({ type: "DELETE_USER", payload: userId });
   };
 
   return (
@@ -238,6 +251,8 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
         getAllUsers,
         listDepartments,
         newDepartment,
+        deleteUser,
+        addUser,
         isLoading,
         error,
         users: state.users,

@@ -16,6 +16,8 @@ type UserContextType = {
   getAllUsers: () => Promise<FetchedUser[]>;
   listDepartments: () => Promise<string[]>;
   newDepartment: (departmentName: string) => Promise<void>;
+  deleteUser: (userId: string) => Promise<void>;
+  addUser: (user: FetchedUser) => Promise<void>;
   isLoading: boolean;
   error: ErrorResponse | null;
   user: AuthUserState | null;
@@ -32,6 +34,8 @@ const initialState: UserContextType = {
   getAllUsers: async () => [],
   listDepartments: async () => [],
   newDepartment: async () => {},
+  deleteUser: async () => {},
+  addUser: async () => { },
   isLoading: true,
   error: null,
   user: null,

@@ -9,6 +9,9 @@ export const UPDATE_USER = "UPDATE_USER";
 export const GET_ALL_USERS = "GET_ALL_USERS";
 export const LIST_DEPARTMENTS = "LIST_DEPARTMENTS";
 export const NEW_DEPARTMENT = "NEW_DEPARTMENT";
+export const DELETE_USER = "DELETE_USER";
+export const ADD_USER = "ADD_USER";
+
 
 type AuthActionTypes =
   | { type: typeof SIGNUP; payload: FetchedUser }
@@ -19,7 +22,9 @@ type AuthActionTypes =
   | { type: typeof UPDATE_USER; payload: FetchedUser }
   | { type: typeof GET_ALL_USERS; payload: FetchedUser[] }
   | { type: typeof LIST_DEPARTMENTS; payload: string[] }
-  | { type: typeof NEW_DEPARTMENT; payload: string };
+  | { type: typeof NEW_DEPARTMENT; payload: string }
+  | { type: typeof DELETE_USER; payload: string }
+  | { type: typeof ADD_USER; payload: FetchedUser };
 
 export const userReducer = (
   state: AuthUserState,
@@ -73,6 +78,16 @@ export const userReducer = (
       return {
         ...state,
         departments: state.departments,
+      };
+    case DELETE_USER:
+      return {
+        ...state,
+        users: (state.users ?? []).filter((user) => user.id !== action.payload),
+      };
+    case ADD_USER:
+      return {
+        ...state,
+        users: [...(state.users ?? []), action.payload],
       };
     default:
       return state;
