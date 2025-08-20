@@ -1,23 +1,12 @@
 import { createContext, useContext } from "react";
+import { BlockchainLogType } from "../types/blockchain";
 
 // Define Blockchain Log type
-export interface BlockchainLog {
-  serial: string;
-  itemName: string;
-  timeApplied: string;
-  hash: string;
-  action: string;
-  user: string;
-  status: string;
-  actions?: string;
-}
-
-// Define context type
 interface BlockchainContextType {
-  recordLogs: (log: BlockchainLog) => Promise<void>;
+  recordLogs: (log: BlockchainLogType) => Promise<void>;
   getLogs: () => Promise<void>;
-  logs: BlockchainLog[];
-  latestLog: BlockchainLog | null;
+  logs: BlockchainLogType[];
+  latestLog: BlockchainLogType | null;
   isLoading: boolean;
   error: string | null;
 }

@@ -7,7 +7,7 @@ import { LogOut, User } from "lucide-react";
 // Admin Pages
 import AdminDashboardHome from "../../pages/Admin/AdminDashboardHome";
 import UserManagement from "../../pages/Admin/UserManagement";
-import SystemSettings from "../../pages/Admin/SystemSettings";
+// import SystemSettings from "../../pages/Admin/SystemSettings";
 import BlockchainLogs from "../../pages/Admin/BlockchainLogs";
 
 // Manager Pages
@@ -127,13 +127,13 @@ export default function MainApp() {
               >
                 User Management
               </Button>
-              <Button
+              {/* <Button
                 variant={adminActivePage === "settings" ? "default" : "ghost"}
                 className="w-full justify-start"
                 onClick={() => setAdminActivePage("settings")}
               >
                 System Settings
-              </Button>
+              </Button> */}
               <Button
                 variant={adminActivePage === "blockchain" ? "default" : "ghost"}
                 className="w-full justify-start"
@@ -148,7 +148,7 @@ export default function MainApp() {
           <div className="flex-1">
             {adminActivePage === "dashboard" && <AdminDashboardHome />}
             {adminActivePage === "users" && <UserManagement />}
-            {adminActivePage === "settings" && <SystemSettings />}
+            {/* {adminActivePage === "settings" && <SystemSettings />} */}
             {adminActivePage === "blockchain" && <BlockchainLogs />}
           </div>
         </div>

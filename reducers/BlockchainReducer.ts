@@ -1,22 +1,12 @@
+import { BlockchainLogType } from "../types/blockchain";
+
 // Action Types
 export const RECORD_LOGS = "RECORD_LOGS";
 export const GET_LOGS = "GET_LOGS";
 
 // Log structure
-export interface BlockchainLog {
-  serial: string;
-  itemName: string;
-  timeApplied: string;
-  hash: string;
-  action: string;
-  user: string;
-  status: string;
-  actions?: string; // optional if needed
-}
-
-// State type
 interface BlockchainState {
-  logs: BlockchainLog[];
+  logs: BlockchainLogType[];
 }
 
 // Initial state
@@ -26,8 +16,8 @@ const initialState: BlockchainState = {
 
 // Action types
 type BlockchainActionTypes =
-  | { type: typeof RECORD_LOGS; payload: BlockchainLog }
-  | { type: typeof GET_LOGS; payload: BlockchainLog[] };
+  | { type: typeof RECORD_LOGS; payload: BlockchainLogType }
+  | { type: typeof GET_LOGS; payload: BlockchainLogType[] };
 
 // Reducer
 export const blockchainReducer = (
